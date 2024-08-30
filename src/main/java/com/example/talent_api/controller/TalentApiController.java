@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,39 +18,40 @@ import com.example.talent_api.model.User;
 import com.example.talent_api.service.UserService;
 
 @RestController
-
-@RequestMapping("/")
+@RequestMapping("/users")
+@CrossOrigin(origins="*")
 public class TalentApiController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/")
-    public String greeting() {
-		return "This is the talent Api!";
-	}
+    // @GetMapping("/")
+    // public String greeting() {
+	// 	return "This is the talent Api!";
+	// }
 
-    @GetMapping("/users")
+    @GetMapping("/")
     public List<User> getUsers() {
+        System.out.println("I am here");
         return userService.getAllUsers();
     }
 
-    @GetMapping("/users/{id}")
-    public Optional<User> getUserById(@PathVariable("id") int id) {
+    @GetMapping("/{id}")
+    public Optional<User> getUserById(@PathVariable("id") Long id) {
         return userService.getUserById(id);
     }
 
-    @PostMapping("/users")
+    @PostMapping("/")
     public Object addUser(@RequestBody User user) {
         return userService.addUser(user);
     }
 
-    @PutMapping("/users/{id}")
-    public Object updateUser(@PathVariable("id") int id, @RequestBody User user) {
+    @PutMapping("/{id}")
+    public Object updateUser(@PathVariable("id") Long id, @RequestBody User user) {
         return userService.updateUser(id, user);
     }
 
-    @DeleteMapping("/users/{id}")
-    public void deleteUser(@PathVariable("id") int id) {
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
     }
     

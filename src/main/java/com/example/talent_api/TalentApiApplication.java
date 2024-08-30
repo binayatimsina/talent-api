@@ -8,8 +8,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "com.example.talent_api")
-// @EnableJpaRepositories(basePackages="com.exmaple.talent_api")
+
 public class TalentApiApplication {
 
 	public static void main(String[] args) {

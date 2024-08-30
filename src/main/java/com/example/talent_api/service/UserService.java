@@ -25,11 +25,11 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> getUserById(int id) {
+    public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
 
-    public User updateUser(int id, User user) {
+    public User updateUser(Long id, User user) {
         User currentUser =  (User) userRepository.findById(id).get();
         currentUser.setUsername(user.getUsername());
         currentUser.setPassword(user.getPassword());
@@ -39,7 +39,7 @@ public class UserService {
 
     }
 
-    public void deleteUser(int id) {
+    public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 }

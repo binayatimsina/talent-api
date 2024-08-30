@@ -13,7 +13,7 @@ source ./talent_user.sql;
 select * from user;
 source ./talent_candidate.sql;
 select * from candidate;
-source ./talent_job.sql;
+source ./talent_jobs.sql;
 select * from job;
 source ./talent_manager.sql;
 select * from manager;
