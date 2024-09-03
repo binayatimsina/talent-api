@@ -42,4 +42,23 @@ public class ApplicationService {
         return appplicationByUserId;
     }
 
+    public Application addApplication (Application application){
+        return applicationRepository.save(application);
+    }
+
+    public Application updateApplication (Long id, Application application){
+        Application existingApplication = applicationRepository.getById(id);
+        existingApplication.setDate_applied(application.getDate_applied());
+        existingApplication.setJob(application.getJob());
+        existingApplication.setUser(application.getUser());
+        existingApplication.setApplication_status(application.getApplication_status());
+        existingApplication.setCover_letter(application.getCover_letter());
+        existingApplication.setCustom_resume(application.getCustom_resume());
+        return applicationRepository.save(existingApplication);
+    }
+
+    public void deleteApplication (Long id){
+        applicationRepository.deleteById(id);
+    }
+
 }
