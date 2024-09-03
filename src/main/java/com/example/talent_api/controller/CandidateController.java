@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.talent_api.model.Candidate;
@@ -49,6 +50,12 @@ public class CandidateController {
     @DeleteMapping("/{id}")
     public void deleteCandidate(@PathVariable("id") Long id) {
         candidateService.deleteCandidate(id);
+    }
+
+    @GetMapping("/search")
+    public List<Candidate> getCandidatesBySearchTerm(@RequestParam String searchTerm){
+        List<Candidate> candidates = candidateService.searchCandidates(searchTerm);
+        return candidates;
     }
     
 }

@@ -22,6 +22,10 @@ public class JobService {
         return jobRepository.findAll();
     }
 
+    public List<Job> searchFromJobs(String searchTerm){
+        return jobRepository.searchFromJobs(searchTerm);
+    }
+
     public Optional<Job> getJobById(long job_id){
         return jobRepository.findById(job_id);
     }
