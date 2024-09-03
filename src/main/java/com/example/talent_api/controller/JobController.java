@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.service.annotation.DeleteExchange;
 
@@ -60,6 +61,11 @@ public class JobController {
     @DeleteMapping("/{id}")
     public void deleteJob(@PathVariable Long id){
         jobService.deleteJob(id);
+    }
+
+    @GetMapping("/search")
+    public  List<Job> searchFromJobs(@RequestParam String searchTerm) {
+        return jobService.searchFromJobs(searchTerm.toLowerCase());
     }
 
 }
