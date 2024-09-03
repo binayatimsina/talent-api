@@ -14,41 +14,41 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.talent_api.model.User;
-import com.example.talent_api.service.UserService;
+import com.example.talent_api.model.Manager;
+import com.example.talent_api.service.ManagerService;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/managers")
 @CrossOrigin(origins="*")
-public class TalentApiController {
+public class ManagerController {
 
     @Autowired
-    private UserService userService;
+    private ManagerService managerService;
 
     
     @GetMapping("")
-    public List<User> getAllUsers(){
-        return userService.getAllUsers();
+    public List<Manager> getAllManagers(){
+        return managerService.getAllManagers();
     }
 
     @GetMapping("/{id}")
-    public Optional<User> getUserById(@PathVariable("id") Long id) {
-        return userService.getUserById(id);
+    public Optional<Manager> getManagerById(@PathVariable("id") Long id) {
+        return managerService.getManagerById(id);
     }
 
     @PostMapping("/")
-    public Object addUser(@RequestBody User user) {
-        return userService.addUser(user);
+    public Object addManager(@RequestBody Manager manager) {
+        return managerService.addManager(manager);
     }
 
     @PutMapping("/{id}")
-    public Object updateUser(@PathVariable("id") Long id, @RequestBody User user) {
-        return userService.updateUser(id, user);
+    public Object updateManager(@PathVariable("id") Long id, @RequestBody Manager manager) {
+        return managerService.updateManager(id, manager);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable("id") Long id) {
-        userService.deleteUser(id);
+    public void deleteManager(@PathVariable("id") Long id) {
+        managerService.deleteManager(id);
     }
     
 }

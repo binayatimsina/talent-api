@@ -14,41 +14,41 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.talent_api.model.User;
-import com.example.talent_api.service.UserService;
+import com.example.talent_api.model.Candidate;
+import com.example.talent_api.service.CandidateService;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/candidates")
 @CrossOrigin(origins="*")
-public class TalentApiController {
+public class CandidateController {
 
     @Autowired
-    private UserService userService;
+    private CandidateService candidateService;
 
     
     @GetMapping("")
-    public List<User> getAllUsers(){
-        return userService.getAllUsers();
+    public List<Candidate> getAllCandidates(){
+        return candidateService.getAllCandidates();
     }
 
     @GetMapping("/{id}")
-    public Optional<User> getUserById(@PathVariable("id") Long id) {
-        return userService.getUserById(id);
+    public Optional<Candidate> getCandidateById(@PathVariable("id") Long id) {
+        return candidateService.getCandidateById(id);
     }
 
     @PostMapping("/")
-    public Object addUser(@RequestBody User user) {
-        return userService.addUser(user);
+    public Object addCandidate(@RequestBody Candidate candidate) {
+        return candidateService.addCandidate(candidate);
     }
 
     @PutMapping("/{id}")
-    public Object updateUser(@PathVariable("id") Long id, @RequestBody User user) {
-        return userService.updateUser(id, user);
+    public Object updateCandidate(@PathVariable("id") Long id, @RequestBody Candidate candidate) {
+        return candidateService.updateCandidate(id, candidate);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable("id") Long id) {
-        userService.deleteUser(id);
+    public void deleteCandidate(@PathVariable("id") Long id) {
+        candidateService.deleteCandidate(id);
     }
     
 }
