@@ -38,9 +38,9 @@ public class JobController {
         return jobService.getOpenJobs();
     }
 
-    @GetMapping("/manager/{mgr_id}")
-    public List<Job> getJobsByManager(@PathVariable("mgr_id") int mgr_id){
-        return jobService.getJobsByManager(mgr_id);
+    @GetMapping("/open/manager/{mgr_id}")
+    public List<Job> getOpenJobsByManager(@PathVariable("mgr_id") int mgr_id){
+        return jobService.getOpenJobsByManager(mgr_id);
     }
 
 }

@@ -31,8 +31,8 @@ public class JobService {
         return jobRepository.findOpenJobs();
     }
 
-    public List<Job> getJobsByManager(long manager_id) {
-        return jobRepository.findJobsByManager(manager_id);
+    public List<Job> getOpenJobsByManager(long manager_id) {
+        return jobRepository.getOpenJobsByManager(manager_id);
     }
 
 }

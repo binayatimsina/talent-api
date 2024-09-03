@@ -13,8 +13,8 @@ public interface JobRepository extends JpaRepository<Job, Long>{
     @Query(value= "SELECT * from job where listing_status = 'Open'", nativeQuery=true)
     List<Job> findOpenJobs();
 
-    @Query(value = "SELECT * from job where manager_id= ?1", nativeQuery=true)
-    List<Job> findJobsByManager(long manager_id);
+    @Query(value = "SELECT * from job where listing_status='Open' and manager_id= ?1", nativeQuery=true)
+    List<Job> getOpenJobsByManager(long manager_id);
     
 
 }
