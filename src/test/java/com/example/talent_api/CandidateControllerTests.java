@@ -2,6 +2,8 @@ package com.example.talent_api;
 import java.util.*;
 import static org.mockito.BDDMockito.given;
 import java.lang.StackWalker.Option;
+
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -92,6 +94,11 @@ public class CandidateControllerTests {
         assertThat(((Candidate) updCand).getFull_name()).isEqualTo("User Three Updated Name");
         assertThat(updCand).isEqualTo(uc);
 
+    }
+
+    @AfterAll
+    public static void cleanup(){
+        System.out.println("tests finished running. inside reset function");
     }
 
     //deleteCandidate is not tested because it is not returning anything!

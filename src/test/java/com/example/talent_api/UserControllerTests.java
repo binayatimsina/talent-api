@@ -3,6 +3,9 @@ package com.example.talent_api;
 import java.util.*;
 import static org.mockito.BDDMockito.given;
 import java.lang.StackWalker.Option;
+
+import org.aspectj.lang.annotation.After;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -84,7 +87,15 @@ public class UserControllerTests {
 
     }
 
+
+    @AfterAll
+    public static void cleanup(){
+        System.out.println("tests finished running. inside reset function");
+    }
+
     //deleteUser cannot be tested because it is not returning anything!
+
+    
 
 
 }
