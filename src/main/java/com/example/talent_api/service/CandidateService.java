@@ -45,4 +45,8 @@ public class CandidateService {
     public void deleteCandidate(Long id) {
         candidateRepository.deleteById(id);
     }
+
+    public List<Candidate> searchCandidates (String searchTerm){
+        return candidateRepository.searchCandidates(searchTerm);
+    }
 }
