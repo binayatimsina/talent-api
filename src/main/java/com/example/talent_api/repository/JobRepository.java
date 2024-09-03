@@ -18,7 +18,7 @@ public interface JobRepository extends JpaRepository<Job, Long>{
     List<Job> getOpenJobsByManager(long manager_id);
 
     @Query(value = "SELECT * from job where lower(listing_title) like %:searchTerm% or lower(job_description) like %:searchTerm% or lower(additional_information) like %:searchTerm%", nativeQuery = true)
-    List<Job> searchForJob(@Param("searchTerm") String searchTerm);
+    List<Job> searchFromJobs(@Param("searchTerm") String searchTerm);
     
 
 }

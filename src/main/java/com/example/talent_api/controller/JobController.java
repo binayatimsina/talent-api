@@ -65,7 +65,7 @@ public class JobController {
 
     @GetMapping("/search")
     public  List<Job> searchFromJobs(@RequestParam String searchTerm) {
-        return jobService.searchForJob(searchTerm.toLowerCase());
+        return jobService.searchFromJobs(searchTerm.toLowerCase());
     }
 
 }
