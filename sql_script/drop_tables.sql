@@ -1,0 +1,5 @@
+DROP TABLE IF EXISTS `application`;
+DROP TABLE IF EXISTS `job`;
+DROP TABLE IF EXISTS `candidate`;
+DROP TABLE IF EXISTS `manager`;
+DROP TABLE IF EXISTS `user`;
