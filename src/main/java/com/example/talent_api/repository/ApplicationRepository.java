@@ -13,5 +13,6 @@ public interface ApplicationRepository extends JpaRepository<Application, Long>{
 
     List<Application> findByJob_Manager_Id(Long managerId);
     Optional<Application> findByJob_Id(Long jobId);
+    Optional<Application> findByUser_Id(Long userId);
 
 }

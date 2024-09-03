@@ -36,4 +36,10 @@ public class ApplicationService {
         return appplicationByJobId;
     }
 
+    public Optional<Application> getApplicationByUserId(Long userId){
+        Optional<Application> appplicationByUserId = 
+            applicationRepository.findByUser_Id(userId);
+        return appplicationByUserId;
+    }
+
 }

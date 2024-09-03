@@ -44,4 +44,10 @@ public class ApplicationController {
         return applicationService.getApplicationByJobId(id);
     }
 
+    @GetMapping("/user/{user_id}")
+    public Optional<Application> getAllApplicationByUserId(
+            @PathVariable("user_id") Long id){
+        return applicationService.getApplicationByUserId(id);
+    }
+
 }
