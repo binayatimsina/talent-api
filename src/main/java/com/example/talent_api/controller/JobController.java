@@ -1,6 +1,7 @@
 package com.example.talent_api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -31,6 +32,21 @@ public class JobController {
         return jobService.getAlljobs();
     }
 
+    @GetMapping("/{job_id}")
+    public Optional<Job> getJobById(@PathVariable("job_id") int job_id){
+        return jobService.getJobById(job_id);
+    }
+
+    @GetMapping("/open")
+    public List<Job> getJobById(){
+        return jobService.getOpenJobs();
+    }
+
+    @GetMapping("/open/manager/{mgr_id}")
+    public List<Job> getOpenJobsByManager(@PathVariable("mgr_id") int mgr_id){
+        return jobService.getOpenJobsByManager(mgr_id);
+    }
+    
     @PostMapping("")
     public Job addJob(@RequestBody Job job){
         return jobService.addJob(job);
