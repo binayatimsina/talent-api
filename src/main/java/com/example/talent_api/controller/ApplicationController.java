@@ -22,6 +22,7 @@ public class ApplicationController {
     
     @GetMapping("")
     public List<Application> getAllApplications(){
+        //push testing
         return applicationService.getAllApplications();
     }
 }
