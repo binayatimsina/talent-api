@@ -3,11 +3,13 @@ package com.example.talent_api.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.talent_api.repository.UserRepository;
 import com.example.talent_api.model.User;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -40,6 +42,21 @@ public class UserService {
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public User findUserByUsername(String username, String password) {
+        // TODO Auto-generated method stub
+
+        User currentUser = userRepository.findUserByUsername(username);
+        if (currentUser != null) {
+            if (currentUser.getPassword().equals(password)) {
+                return currentUser;
+            }
+        } 
+
+        return null;
+
+
     }
     
 }
