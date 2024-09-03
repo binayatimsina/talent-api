@@ -1,10 +1,12 @@
 package com.example.talent_api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,4 +26,28 @@ public class ApplicationController {
     public List<Application> getAllApplications(){
         return applicationService.getAllApplications();
     }
+
+    @GetMapping("/{id}")
+    public Optional<Application> getAllApplicationById(@PathVariable("id") Long id){
+        return applicationService.getApplicationById(id);
+    }
+
+    @GetMapping("/manager/{manager_id}")
+    public List<Application> getAllApplicationByManagerId(
+            @PathVariable("manager_id") Long id){
+        return applicationService.getApplicationByManagerId(id);
+    }
+
+    @GetMapping("/job/{job_id}")
+    public Optional<Application> getAllApplicationByJobId(
+            @PathVariable("job_id") Long id){
+        return applicationService.getApplicationByJobId(id);
+    }
+
+    @GetMapping("/user/{user_id}")
+    public Optional<Application> getAllApplicationByUserId(
+            @PathVariable("user_id") Long id){
+        return applicationService.getApplicationByUserId(id);
+    }
+
 }
