@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.talent_api.repository.UserRepository;
@@ -57,6 +59,17 @@ public class UserService {
         return null;
 
 
+    }
+
+    public User register(String username, String password, String type) {
+        // TODO Auto-generated method stub
+        if (userRepository.findUserByUsername(username) != null) {
+            return null; 
+        } else {
+            User newUser = new User(username, password, type);
+            addUser(newUser);
+            return newUser;
+        }
     }
     
 }

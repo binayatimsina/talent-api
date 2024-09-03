@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.talent_api.service.UserService;
-
 import com.example.talent_api.model.User;
 import java.util.*;
 
@@ -38,6 +37,23 @@ public class AuthenticationController {
             return ResponseEntity.status(HttpStatus.OK).body(currentUser);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
+
+    }
+
+    @PostMapping("/registration")
+    public ResponseEntity registration(@RequestBody Map<String, String> registrationCredential) {
+        String username = registrationCredential.get("username");
+        String password = registrationCredential.get("password");
+        String type = registrationCredential.get("type");
+        
+        User newUser = userService.register(username, password, type);
+
+        if (newUser != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(newUser);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("username already exists.");
         }
 
 
