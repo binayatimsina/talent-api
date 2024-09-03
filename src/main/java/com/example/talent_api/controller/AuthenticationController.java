@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.talent_api.service.UserService;
+import com.example.talent_api.security.*;
+import org.springframework.security.core.Authentication;
 import com.example.talent_api.model.User;
 import java.util.*;
 
@@ -25,6 +27,14 @@ public class AuthenticationController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TokenService tokenService;
+
+    @GetMapping("/token")
+    public String token(Authentication authentication) {
+        return tokenService.generateToken(authentication);
+    } 
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody Map<String, String> loginCredential) {
