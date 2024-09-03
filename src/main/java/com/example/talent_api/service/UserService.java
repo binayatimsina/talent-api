@@ -15,11 +15,6 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    // public List<User> getAllUsers(){
-    //     System.out.println("-----------"+userRepository.findAll());
-    //     return userRepository.findAll();
-    // }
-
     public Object addUser(User user) {
         
         return (userRepository.save(user)); 
