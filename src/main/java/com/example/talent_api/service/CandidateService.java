@@ -53,4 +53,8 @@ public class CandidateService {
     public List<Candidate> searchCandidates (String searchTerm){
         return candidateRepository.searchCandidates(searchTerm);
     }
+
+    public Candidate getCandidateByUserId(Long userid){
+        return candidateRepository.getCandidateByUserId(userid);
+    }
 }
