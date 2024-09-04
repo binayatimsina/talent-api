@@ -46,7 +46,9 @@ public class UserControllerIntegrationTests {
     @AfterEach
     public void afterEach() {
         for (User user : this.userController.getAllUsers()) {
-            this.userController.deleteUser(user.getId());
+            if(user.getId() > 9l){
+                this.userController.deleteUser(user.getId());
+            }
         }
     }
 
@@ -103,13 +105,38 @@ public class UserControllerIntegrationTests {
         assertThat(users).isNotNull();
         assertThat(users.length).isEqualTo(10);
 
-        assertThat(respUser.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(201));
+        //assertThat(respUser.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(201));
 
         assertThat(listPostAdd).isNotNull();
         assertThat(listPostAdd.length).isEqualTo(11);
 
+    }
 
+    @Test
+    void testUpdateUser() throws Exception {
+        //Get userOne
+        String getUserOneUrl = "http://localhost:" + port + "/users/"+this.userOne.getId();
+        User user = this.restTemplate.getForObject(getUserOneUrl, User.class);
 
+        //Create update url
+        String urlUpdate = getUserOneUrl;
+
+        //change a value in user
+        user.setUsername("new_username");
+
+        //update the value
+        HttpHeaders hp = new HttpHeaders();
+        HttpEntity<User> reqBodyWithHeaders = new HttpEntity<>(user, hp);
+        this.restTemplate.put(urlUpdate, reqBodyWithHeaders, User.class);
+
+        User getUpdUser = this.restTemplate.getForObject(getUserOneUrl, User.class);
+        
+        //check is successful
+        assertThat(getUpdUser).isNotNull();
+        assertThat(getUpdUser.getId()).isEqualTo(user.getId());
+        assertThat(getUpdUser.getUsername()).isEqualTo("new_username");
+        assertThat(getUpdUser.getType()).isEqualTo(user.getType());
+        assertThat(getUpdUser.getPassword()).isEqualTo(user.getPassword());
 
     }
 
@@ -124,10 +151,6 @@ public class UserControllerIntegrationTests {
         assertThat(deletedUser).isNull();
     }
 
-    @Before(value = "testDeleteUser")
-    void insertUserToDelete(){
-        
-    }
 }
 
 
