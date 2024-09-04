@@ -38,7 +38,10 @@ public class JobService {
         return jobRepository.getOpenJobsByManager(manager_id);
     }
     
-    public Job addJob(Job job){
+    public Job addJob(Job job) throws Exception{
+        if (job.getListing_title()==""){
+            throw new Exception("Listing title cannot be empty");
+        }
         Job savedJob = jobRepository.save(job);
         return savedJob;
     }
@@ -58,8 +61,12 @@ public class JobService {
         return savedJob;
     }
 
-    public void deleteJob (Long id){
-        jobRepository.deleteById(id);
+    public void deleteJob (Long id) throws Exception{
+        if (jobRepository.existsById(id)){
+            jobRepository.deleteById(id);
+            return;
+        } 
+        throw new Exception("Record not existing");
     }
 
 }
