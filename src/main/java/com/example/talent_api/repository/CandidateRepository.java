@@ -22,6 +22,11 @@ public interface CandidateRepository extends JpaRepository<Candidate, Long>{
     )
     List<Candidate> searchCandidates (@Param("searchTerm") String searchTerm);
 
+
     @Query("SELECT c FROM Candidate c JOIN c.user u WHERE u.username = :username")
     Candidate findByUsername(@Param("username") String username);
+
+    @Query(value = "select * from candidate where user_id=%:userid%", nativeQuery = true)
+    Candidate getCandidateByUserId(@Param("userid") Long userid);
+
 }

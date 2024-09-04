@@ -54,7 +54,13 @@ public class CandidateService {
         return candidateRepository.searchCandidates(searchTerm);
     }
 
+
     public Candidate findCandidateByUsername(String username) {
         return candidateRepository.findByUsername(username);
+    }
+  
+    public Candidate getCandidateByUserId(Long userid){
+        return candidateRepository.getCandidateByUserId(userid);
+
     }
 }
