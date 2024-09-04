@@ -1,7 +1,11 @@
 package com.example.talent_api.service;
 
 import java.util.List;
+import java.util.Optional;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import com.example.talent_api.model.Job;
@@ -18,7 +22,26 @@ public class JobService {
         return jobRepository.findAll();
     }
 
-    public Job addJob(Job job){
+    public List<Job> searchFromJobs(String searchTerm){
+        return jobRepository.searchFromJobs(searchTerm);
+    }
+
+    public Optional<Job> getJobById(long job_id){
+        return jobRepository.findById(job_id);
+    }
+
+    public List<Job> getOpenJobs() {
+        return jobRepository.findOpenJobs();
+    }
+
+    public List<Job> getOpenJobsByManager(long manager_id) {
+        return jobRepository.getOpenJobsByManager(manager_id);
+    }
+    
+    public Job addJob(Job job) throws Exception{
+        if (job.getListing_title()==""){
+            throw new Exception("Listing title cannot be empty");
+        }
         Job savedJob = jobRepository.save(job);
         return savedJob;
     }
@@ -38,8 +61,12 @@ public class JobService {
         return savedJob;
     }
 
-    public void deleteJob (Long id){
-        jobRepository.deleteById(id);
+    public void deleteJob (Long id) throws Exception{
+        if (jobRepository.existsById(id)){
+            jobRepository.deleteById(id);
+            return;
+        } 
+        throw new Exception("Record not existing");
     }
 
 }

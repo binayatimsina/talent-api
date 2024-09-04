@@ -41,7 +41,11 @@ public class ManagerService {
 
     }
 
-    public void deleteManager(Long id) {
-        managerRepository.deleteById(id);
+    public boolean deleteManager(Long id) {
+        if (managerRepository.existsById(id)){
+            managerRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }

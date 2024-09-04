@@ -42,7 +42,15 @@ public class CandidateService {
 
     }
 
-    public void deleteCandidate(Long id) {
-        candidateRepository.deleteById(id);
+    public boolean deleteCandidate(Long id) {
+        if(candidateRepository.existsById(id)){
+            candidateRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    public List<Candidate> searchCandidates (String searchTerm){
+        return candidateRepository.searchCandidates(searchTerm);
     }
 }
