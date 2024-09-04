@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.talent_api.service.ManagerService;
 import com.example.talent_api.service.UserService;
+import com.example.talent_api.model.Manager;
 import com.example.talent_api.model.User;
 import java.util.*;
 
@@ -26,10 +28,21 @@ public class AuthenticationController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ManagerService managerService;
+
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody Map<String, String> loginCredential) {
         String username = loginCredential.get("username");
         String password = loginCredential.get("password");
+
+        Manager currentManager = managerService.findManagerByUsername(username, password);
+        if (currentManager != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(currentManager);
+        } else {
+
+        System.out.println("\n\n\n\n\n\n\n\n\n");
+        System.out.println(username);
 
         User currentUser = userService.findUserByUsername(username, password);
         
@@ -38,6 +51,7 @@ public class AuthenticationController {
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
+    }
 
 
     }

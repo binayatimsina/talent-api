@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.talent_api.repository.ManagerRepository;
 import com.example.talent_api.model.Manager;
+import com.example.talent_api.model.User;
 
 
 @Service
@@ -38,6 +39,19 @@ public class ManagerService {
         currentManager.setPhone(manager.getPhone());
         managerRepository.save(currentManager);
         return currentManager;
+
+    }
+
+    public Manager findManagerByUsername(String username, String password) {
+        Manager currentManager = managerRepository.findManagerByUsername(username);
+        if (currentManager != null) {
+            if (currentManager.getUser().getPassword().equals(password)) {
+                return currentManager;
+            }
+        }
+
+        return null;
+
 
     }
 
