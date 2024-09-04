@@ -32,15 +32,19 @@ public class UserController {
 
     
     @GetMapping("")
-    public List<User> getAllUsers(){
-        return userService.getAllUsers();
+    public ResponseEntity<List<User>> getAllUsers(){
+        List<User> userList = userService.getAllUsers();
+        if(userList.size()!=0){
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(userList);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(userList);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<User>> getUserById(@PathVariable Long id) {
-        Optional<User> user = userService.getUserById(id);
-        if(user.isPresent()){
-            return ResponseEntity.status(HttpStatus.OK).body(user);
+        Optional<User> userById = userService.getUserById(id);
+        if(userById.isPresent()){
+            return ResponseEntity.status(HttpStatus.OK).body(userById);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Optional.empty());
     }

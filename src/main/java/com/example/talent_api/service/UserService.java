@@ -51,8 +51,6 @@ public class UserService {
     }
 
     public User findUserByUsername(String username, String password) {
-        // TODO Auto-generated method stub
-
         User currentUser = userRepository.findUserByUsername(username);
         if (currentUser != null) {
             if (currentUser.getPassword().equals(password)) {
