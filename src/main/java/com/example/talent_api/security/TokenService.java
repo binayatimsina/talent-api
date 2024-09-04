@@ -6,15 +6,23 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.oauth2.jwt.JwtClaimsSet; 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.talent_api.model.User;
+import com.example.talent_api.service.UserService;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -28,10 +36,19 @@ import com.nimbusds.jose.proc.SecurityContext;
 //  JWTs contain claims including the user name (sub) and authorities (scope)
 
 @Service
-public class TokenService {
+public class TokenService implements UserDetailsService{
 
     @Value("${rsa.private-key}") RSAPrivateKey privateKey;
     @Value("${rsa.public-key}") RSAPublicKey publicKey;
+
+    @Autowired
+    private UserService userService;
+
+    private final JwtDecoder jwtDecoder;
+
+    public TokenService() {
+        this.jwtDecoder = JwtDecoders.fromIssuerLocation("http://localhost:8080");
+    }
 
     public String generateToken(Authentication authentication) {
         Instant now = Instant.now();
@@ -62,6 +79,32 @@ public class TokenService {
         JWK jwk = new RSAKey.Builder(publicKey).privateKey(privateKey).build();
         JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
         return new NimbusJwtEncoder(jwks);
+    }
+
+
+    public boolean validateToken(String token) {
+        try {
+            jwtDecoder.decode(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public String getUsernameFromToken(String token) {
+        return jwtDecoder.decode(token).getSubject();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userService.findUserByUsername(username, null);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        return org.springframework.security.core.userdetails.User.withUsername(user.getUsername())
+                .password(user.getPassword())
+                .authorities(user.getType()) // Adjust based on your User roles/authorities setup
+                .build();
     }
 
 }
