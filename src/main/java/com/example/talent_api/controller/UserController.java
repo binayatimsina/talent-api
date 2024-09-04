@@ -20,10 +20,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.talent_api.service.UserService;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import com.example.talent_api.model.User;
 
 @RestController
 @RequestMapping("/users")
+@Tag(name = "User APIs", description = "Operations related to users")
 @CrossOrigin(origins="*")
 public class UserController {
 
