@@ -33,9 +33,10 @@ public class UserControllerTests {
 
         given(us.getAllUsers()).willReturn(List.of(u1,u2));
         var uList = uc.getAllUsers();
+        List<User> list = uList.getBody();
         //then
-        assertThat(uList).isNotNull();
-        assertThat(uList.size()).isEqualTo(2);
+        assertThat(list).isNotNull();
+        assertThat(list.size()).isEqualTo(2);
     }
 
     @Test
@@ -49,8 +50,8 @@ public class UserControllerTests {
         //the return is Optional<Customer> so it should be nullable in case null returns
         var user = uc.getUserById(2l);
         //then
-        assertThat(user).isNotNull();
-        assertThat(user).isEqualTo(Optional.ofNullable(u2));
+        assertThat(user.getBody()).isNotNull();
+        assertThat(user.getBody()).isEqualTo(Optional.ofNullable(u2));
     }
 
     @Test
@@ -63,8 +64,8 @@ public class UserControllerTests {
         //the return is Optional<Customer> so it should be nullable in case null returns
         var u = uc.addUser(u1); //the service method calling the repo...
         //then
-        assertThat(u).isNotNull();
-        assertThat(u).isEqualTo(u1); //comparing service return vals with repo return val
+        assertThat(u.getBody()).isNotNull();
+        assertThat(u.getBody()).isEqualTo(u1); //comparing service return vals with repo return val
 
     }
 
@@ -78,10 +79,26 @@ public class UserControllerTests {
         //when
         given(us.updateUser(2l, uu)).willReturn(uu);
         var u = uc.updateUser(2l, uu);
+        User respUser = (User) u.getBody();
 
-        assertThat(u).isNotNull();
-        assertThat(((User) u).getPassword()).isEqualTo("newPass2");
-        assertThat(u).isEqualTo(uu);
+        assertThat(respUser).isNotNull();
+        assertThat((respUser).getPassword()).isEqualTo("newPass2");
+        assertThat(respUser).isEqualTo(uu);
+
+    }
+
+    @Test
+    void testDeleteUser(){
+        User u1 = new User("user1","pass1","admin");
+        us.addUser(u1);
+        //when
+        given(us.deleteUser(u1.getId())).willReturn(true); //the repository method and what it should return
+
+        //the return is Optional<Customer> so it should be nullable in case null returns
+        var bool = uc.deleteUser(u1.getId()); //the service method calling the repo...
+        //then
+        assertThat(bool.getBody()).isNotNull();
+        assertThat(bool.getBody()).isEqualTo(true); //comparing service return vals with repo return val
 
     }
 

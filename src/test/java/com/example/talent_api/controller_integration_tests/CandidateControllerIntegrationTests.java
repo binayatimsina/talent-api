@@ -1,8 +1,8 @@
-
-
 package com.example.talent_api.controller_integration_tests;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
 
 import org.hibernate.annotations.CascadeType;
 import org.junit.jupiter.api.AfterEach;
@@ -55,12 +55,16 @@ public class CandidateControllerIntegrationTests {
 
     @AfterEach
     public void afterEach() {
-        for (Candidate candidate : this.candidateController.getAllCandidates()) {
+        ResponseEntity<List<Candidate>> resp = this.candidateController.getAllCandidates();
+        List<Candidate> candidates = resp.getBody();
+        for (Candidate candidate : candidates) {
             if(candidate.getId() > 5l){ //there are five original records from sql files
                 this.candidateController.deleteCandidate(candidate.getId());
             }
         }
-        for (User user : this.userController.getAllUsers()) {
+        ResponseEntity<List<User>> resp2 = this.userController.getAllUsers();
+        List<User> users = resp2.getBody();
+        for (User user : users) {
             if(user.getId() > 9l){
                 this.userController.deleteUser(user.getId());
             }
@@ -121,7 +125,7 @@ public class CandidateControllerIntegrationTests {
         assertThat(candidates).isNotNull();
         assertThat(candidates.length).isEqualTo(6);
 
-        assertThat(respCandidate.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(200));
+        assertThat(respCandidate.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(201));
 
         assertThat(listPostAdd).isNotNull();
         assertThat(listPostAdd.length).isEqualTo(7);

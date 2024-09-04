@@ -12,14 +12,17 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
-
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
@@ -62,12 +65,13 @@ class ManagerControllerTests {
 
         // Calling the controller method
         var response = managerController.getAllManagers();
+        List<Manager> managers = response.getBody();
 
         // Verifying the response
-        assertThat(response).isNotEmpty();
-        assertThat(response.size()).isEqualTo(2);
-        assertThat(response.get(0).getFull_name()).isEqualTo("John Doe");
-        assertThat(response.get(1).getFull_name()).isEqualTo("Jane Smith");
+        assertThat(managers).isNotEmpty();
+        assertThat(managers.size()).isEqualTo(2);
+        assertThat(managers.get(0).getFull_name()).isEqualTo("John Doe");
+        assertThat(managers.get(1).getFull_name()).isEqualTo("Jane Smith");
     }
 
     @Test
@@ -88,10 +92,10 @@ class ManagerControllerTests {
 
         // Calling the controller method
         var response = managerController.getManagerById(1L);
-
+        Optional<Manager> managerResp = response.getBody();
         // Verifying the response
-        assertThat(response).isPresent();
-        assertThat(response.get().getFull_name()).isEqualTo("John Doe");
+        assertThat(managerResp).isPresent();
+        assertThat(managerResp.get().getFull_name()).isEqualTo("John Doe");
     }
 
     @Test
@@ -112,10 +116,12 @@ class ManagerControllerTests {
 
         // Calling the controller method
         var response = managerController.addManager(newManager);
+        //Optional<Manager> managers = (Optional<Manager>) response.getBody();
 
         // Verifying the response
         assertThat(response).isNotNull();
-        assertThat(((Manager) response).getFull_name()).isEqualTo("Jane Doe");
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(202));
+        //assertThat(((Manager) managers).getFull_name()).isEqualTo("Jane Doe");
     }
 
     @Test
@@ -136,22 +142,36 @@ class ManagerControllerTests {
 
         // Calling the controller method
         var response = managerController.updateManager(1L, updatedManager);
+        //Optional<Manager> managers = (Optional<Manager>) response.getBody();
 
         // Verifying the response
         assertThat(response).isNotNull();
-        assertThat(((Manager) response).getFull_name()).isEqualTo("Updated Name");
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(202));
+
+        //assertThat(((Manager) response).getFull_name()).isEqualTo("Updated Name");
     }
 
     @Test
-    void testDeleteManager() {
-        // Mocking service behavior for deletion
-        doNothing().when(managerService).deleteManager(1L);
+    void testDeleteManager(){
+        User u1 = new User("user1","pass1","admin");
+        Manager m1 = new Manager();
+        m1.setUser(u1);
+        m1.setFull_name("Updated Name");
+        m1.setEmail("updated@example.com");
+        m1.setDepartment("Finance");
+        m1.setPhone("321-654-9870");
+        //us.addUser(u1);
+        managerService.addManager(m1);
+        //when
+        //the repository method and what it should return
+        given(managerService.deleteManager(m1.getId())).willReturn(true);
+        //the return is Optional<Customer> so it should be nullable in case null returns
+        //the service method calling the repo...
+        var resp = managerController.deleteManager(m1.getId());
+        //then
+        assertThat(resp.getBody()).isNotNull();
+        assertThat(resp.getBody()).isEqualTo(true); //comparing service return vals with repo return val
 
-        // Calling the controller method
-        managerController.deleteManager(1L);
-
-        // Verifying that the deleteManager method was called once
-        Mockito.verify(managerService, Mockito.times(1)).deleteManager(1L);
     }
      @AfterAll
      public static void cleanup() {

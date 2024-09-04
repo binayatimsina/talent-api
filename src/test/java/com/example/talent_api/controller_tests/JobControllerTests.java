@@ -35,17 +35,18 @@ public class JobControllerTests {
         Job job = new Job(manager, "Finance", "Name", "Developer", "Description", "Five Years On Job", "Agency");
         Job job2 = new Job(manager, "COrporate", "CEO", "Developer", "Description", "Five Years On Job", "Agency");
         given(jobservice.getAlljobs()).willReturn(List.of(job, job2));
-        var jList = jobcontroller.getAlljobs();
-        assertThat(jList).isNotNull();
-        assertThat(jList.size()).isEqualTo(2);
+        var response = jobcontroller.getAlljobs();
+        List<Job> jobs = response.getBody();
+        assertThat(jobs).isNotNull();
+        assertThat(jobs.size()).isEqualTo(2);
     }
     @Test
     public void addJob() throws Exception {
         Job job = new Job(manager, "Finance", "Name", "Developer", "Description", "Five Years On Job", "Agency");
         given(jobservice.addJob(job)).willReturn(job);
         var j = jobcontroller.addJob(job);
-        assertThat(j).isNotNull();
-        assertThat(j).isEqualTo(job);
+        assertThat(j.getBody()).isNotNull();
+        assertThat(j.getBody()).isEqualTo(job);
     }
     @Test
     public void testupdateJOb() throws Exception {
@@ -54,7 +55,7 @@ public class JobControllerTests {
         var j = jobcontroller.updateJob(2l, updatedJob);
         
         assertThat(updatedJob).isNotNull();
-        assertThat(j).isEqualTo(updatedJob);
+        assertThat(j.getBody()).isEqualTo(updatedJob);
     }
     @Test
     public void deleteJob() throws Exception {
@@ -63,6 +64,21 @@ public class JobControllerTests {
         verify(jobservice, times(1)).deleteJob(2L);
 
     }
+    /*
+    @Test
+    void testDeleteJob(){
+        Job j1 = new Job(manager, "Business", "Lead", "Analyst", "Checks data", "5 year", "NEW");
+        //when
+        //the repository method and what it should return
+        given(jobservice.deleteJob(j1.getId())).willReturn(true);
+        //the return is Optional<Customer> so it should be nullable in case null returns
+        //the service method calling the repo...
+        var resp = managerController.deleteManager(m1.getId());
+        //then
+        assertThat(resp.getBody()).isNotNull();
+        assertThat(resp.getBody()).isEqualTo(true); //comparing service return vals with repo return val
+
+    }*/
 
 
 }

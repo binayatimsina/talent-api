@@ -8,9 +8,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 
 import com.example.talent_api.controller.CandidateController;
 import com.example.talent_api.model.Candidate;
+import com.example.talent_api.model.Manager;
 import com.example.talent_api.model.User;
 import com.example.talent_api.service.CandidateService;
 
@@ -55,8 +58,8 @@ public class CandidateControllerTests {
         //the return is Optional<Customer> so it should be nullable in case null returns
         var candidate = cc.getCandidateById(2l);
         //then
-        assertThat(candidate).isNotNull();
-        assertThat(candidate).isEqualTo(Optional.ofNullable(c2));
+        assertThat(candidate.getBody()).isNotNull();
+        assertThat(candidate.getBody()).isEqualTo(Optional.ofNullable(c2));
     }
 
     @Test
@@ -70,8 +73,10 @@ public class CandidateControllerTests {
         //the return is Optional<Customer> so it should be nullable in case null returns
         var candidate = cc.addCandidate(c1); //the service method calling the repo...
         //then
+        var c = (ResponseEntity<Candidate>) candidate;
         assertThat(candidate).isNotNull();
-        assertThat(candidate).isEqualTo(c1); //comparing service return vals with repo return val
+
+        assertThat(c.getBody()).isEqualTo(c1); //comparing service return vals with repo return val
 
     }
 
@@ -88,10 +93,33 @@ public class CandidateControllerTests {
         //when
         given(cs.updateCandidate(2l, uc)).willReturn(uc);
         var updCand = cc.updateCandidate(2l, uc);
-
+        var c = (ResponseEntity<Candidate>) updCand;
         assertThat(updCand).isNotNull();
-        assertThat(((Candidate) updCand).getFull_name()).isEqualTo("User Three Updated Name");
-        assertThat(updCand).isEqualTo(uc);
+        assertThat(c.getBody().getFull_name()).isEqualTo("User Three Updated Name");
+        assertThat(c.getBody()).isEqualTo(uc);
+
+    }
+
+    void testDeleteCandidate(){
+        User u1 = new User("user1","pass1","admin");
+        Candidate c1 = new Candidate();
+        c1.setUser(u1);
+        c1.setFull_name("Updated Name");
+        c1.setEmail("updated@example.com");
+        c1.setPhone("321-654-9870");
+        c1.setResume("resume.pdf");
+        //us.addUser(u1);
+        cs.addCandidate(c1);
+
+        //when
+        //the repository method and what it should return
+        given(cs.deleteCandidate(c1.getId())).willReturn(true);
+        //the return is Optional<Customer> so it should be nullable in case null returns
+        //the service method calling the repo...
+        var resp = cc.deleteCandidate(c1.getId());
+        //then
+        assertThat(resp.getBody()).isNotNull();
+        assertThat(resp.getBody()).isEqualTo(true); //comparing service return vals with repo return val
 
     }
 

@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.talent_api.model.Candidate;
 import com.example.talent_api.service.CandidateService;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
-
 @RestController
 @RequestMapping("/candidates")
 @Tag(name = "Candidate APIs", description = "Operations related to candidates")

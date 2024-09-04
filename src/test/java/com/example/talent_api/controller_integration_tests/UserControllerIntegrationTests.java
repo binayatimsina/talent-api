@@ -2,6 +2,8 @@ package com.example.talent_api.controller_integration_tests;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,7 +45,9 @@ public class UserControllerIntegrationTests {
 
     @AfterEach
     public void afterEach() {
-        for (User user : this.userController.getAllUsers()) {
+        ResponseEntity<List<User>> resp = this.userController.getAllUsers();
+        List<User> users = resp.getBody();
+        for (User user : users) {
             if(user.getId() > 9l){
                 this.userController.deleteUser(user.getId());
 
@@ -108,6 +112,8 @@ public class UserControllerIntegrationTests {
         assertThat(users.length).isEqualTo(10);
 
         //assertThat(respUser.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(201));
+        assertThat(respUser.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(201));
+
 
         assertThat(listPostAdd).isNotNull();
         assertThat(listPostAdd.length).isEqualTo(11);

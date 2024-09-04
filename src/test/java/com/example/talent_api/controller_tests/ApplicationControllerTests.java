@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -70,11 +71,12 @@ class ApplicationControllerTests {
         when(applicationService.getAllApplications()).thenReturn(Arrays.asList(app1, app2));
 
         var response = applicationController.getAllApplications();
+        List<Application> apps = response.getBody();
 
-        assertThat(response).isNotEmpty();
-        assertThat(response.size()).isEqualTo(2);
-        assertThat(response.get(0).getApplication_status()).isEqualTo("Pending");
-        assertThat(response.get(1).getApplication_status()).isEqualTo("Accepted");
+        assertThat(apps).isNotEmpty();
+        assertThat(apps.size()).isEqualTo(2);
+        assertThat(apps.get(0).getApplication_status()).isEqualTo("Pending");
+        assertThat(apps.get(1).getApplication_status()).isEqualTo("Accepted");
     }
 
     @Test
@@ -84,9 +86,10 @@ class ApplicationControllerTests {
         when(applicationService.getApplicationById(1L)).thenReturn(Optional.of(app));
 
         var response = applicationController.getAllApplicationById(1L);
+        Optional<Application> respApp = response.getBody();
 
-        assertThat(response).isPresent();
-        assertThat(response.get().getApplication_status()).isEqualTo("Pending");
+        assertThat(respApp).isPresent();
+        assertThat(respApp.get().getApplication_status()).isEqualTo("Pending");
     }
 
     @Test
@@ -95,10 +98,12 @@ class ApplicationControllerTests {
 
         when(applicationService.getApplicationByManagerId(anyLong())).thenReturn(Arrays.asList(app1));
 
-        List<Application> response  = applicationController.getAllApplicationByManagerId(1L);
+        var response  = applicationController.getAllApplicationByManagerId(1L);
 
-        assertThat(response).isNotEmpty();
-        assertThat(response.get(0).getApplication_status()).isEqualTo("Pending");
+        List<Application> applications = response.getBody();
+
+        assertThat(applications).isNotEmpty();
+        assertThat(applications.get(0).getApplication_status()).isEqualTo("Pending");
     }
 
     @Test
@@ -107,10 +112,12 @@ class ApplicationControllerTests {
 
         when(applicationService.getApplicationByJobId(1L)).thenReturn(Optional.of(app));
 
-        Optional<Application> response  = applicationController.getAllApplicationByJobId(1L);
+        ResponseEntity<Optional<Application>> response  = applicationController.getAllApplicationByJobId(1L);
 
-        assertThat(response).isPresent();
-        assertThat(response.get().getApplication_status()).isEqualTo("Pending");
+        Optional<Application> application = response.getBody();
+
+        assertThat(application).isPresent();
+        assertThat(application.get().getApplication_status()).isEqualTo("Pending");
     }
 
     @Test
@@ -119,10 +126,11 @@ class ApplicationControllerTests {
 
         when(applicationService.getApplicationByUserId(1L)).thenReturn(Optional.of(app));
 
-        Optional<Application> response  = applicationController.getAllApplicationByUserId(1L);
+        ResponseEntity<Optional<Application>> response  = applicationController.getAllApplicationByUserId(1L);
+        Optional<Application> application = response.getBody();
 
-        assertThat(response).isPresent();
-        assertThat(response.get().getApplication_status()).isEqualTo("Pending");
+        assertThat(application).isPresent();
+        assertThat(application.get().getApplication_status()).isEqualTo("Pending");
     }
 }
 
