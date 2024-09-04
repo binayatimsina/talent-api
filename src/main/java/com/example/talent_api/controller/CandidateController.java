@@ -80,5 +80,11 @@ public class CandidateController {
         List<Candidate> candidates = candidateService.searchCandidates(searchTerm);
         return ResponseEntity.status(HttpStatus.OK).body(candidates);
     }
+
+    @GetMapping("/getcandidate/{userid}")
+    public ResponseEntity<Candidate> getCandidateByUserId(@PathVariable("userid") Long userid){
+        Candidate candidate = candidateService.getCandidateByUserId(userid);
+        return ResponseEntity.status(HttpStatus.OK).body(candidate);
+    }
     
 }

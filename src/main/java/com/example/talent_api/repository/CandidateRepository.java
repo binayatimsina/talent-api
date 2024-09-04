@@ -20,4 +20,7 @@ public interface CandidateRepository extends JpaRepository<Candidate, Long>{
         "LOWER(c.resume) LIKE LOWER(CONCAT('%', :searchTerm, '%'))"
     )
     List<Candidate> searchCandidates (@Param("searchTerm") String searchTerm);
+
+    @Query(value = "select * from candidate where user_id=%:userid%", nativeQuery = true)
+    Candidate getCandidateByUserId(@Param("userid") Long userid);
 }
