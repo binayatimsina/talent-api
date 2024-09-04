@@ -17,7 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.talent_api.service.UserService;
 import com.example.talent_api.security.*;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.example.talent_api.model.User;
 import java.util.*;
 
@@ -37,20 +42,30 @@ public class AuthenticationController {
     } 
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody Map<String, String> loginCredential) {
-        String username = loginCredential.get("username");
-        String password = loginCredential.get("password");
+    public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, String> loginCredential) {
+    String username = loginCredential.get("username");
+    String password = loginCredential.get("password");
 
-        User currentUser = userService.findUserByUsername(username, password);
-        
-        if (currentUser != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(currentUser);
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
+    User userDetails = userService.findUserByUsername(username, password);
 
+    if (userDetails != null) {
+        // Create authentication object
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, password);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        // Generate token
+        String token = tokenService.generateToken(authentication);
+
+        // Return the token along with user information
+        Map<String, String> response = new HashMap<>();
+        response.put("token", token);
+        response.put("username", username);
+
+        return ResponseEntity.ok(response);
+    } else {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
+}
 
     @PostMapping("/registration")
     public ResponseEntity registration(@RequestBody Map<String, String> registrationCredential) {

@@ -30,7 +30,7 @@ public class SecurityConfig {
 
              //  All inbound requests must be authenticated:
              .authorizeHttpRequests( auth -> auth
-                 .requestMatchers("/").permitAll()
+                 .requestMatchers("/registration").permitAll()
                  .anyRequest().authenticated()
              )
              .httpBasic(Customizer.withDefaults())
