@@ -48,4 +48,8 @@ public class ManagerService {
         }
         return false;
     }
+
+    public Manager findManagerByUsername(String username) {
+        return managerRepository.findByUsername(username);
+    }
 }
