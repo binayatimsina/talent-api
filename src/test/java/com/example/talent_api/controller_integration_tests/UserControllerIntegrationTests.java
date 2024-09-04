@@ -1,9 +1,7 @@
-package com.example.talent_api;
+package com.example.talent_api.controller_integration_tests;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +14,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 
 import com.example.talent_api.controller.UserController;
 import com.example.talent_api.model.User;
@@ -39,6 +36,7 @@ public class UserControllerIntegrationTests {
 
     @BeforeEach
     public void beforeEach() {
+        //this.restTemplate.delete("http://localhost:" + port + "/users/12");
         this.userController.addUser(this.userOne);
         this.userController.addUser(this.userTwo);
     }
@@ -48,6 +46,10 @@ public class UserControllerIntegrationTests {
         for (User user : this.userController.getAllUsers()) {
             if(user.getId() > 9l){
                 this.userController.deleteUser(user.getId());
+
+                String deleteUrl = "http://localhost:" + port + "/users/" + user.getId();
+        
+                this.restTemplate.delete(deleteUrl);
             }
         }
     }
@@ -61,11 +63,11 @@ public class UserControllerIntegrationTests {
 	void testGetUserById() throws Exception {
 
         String endpointUrl = "http://localhost:" + port + "/users";
-        User result = this.restTemplate.getForObject(endpointUrl+"/1", User.class );
+        User result = this.restTemplate.getForObject(endpointUrl+"/2", User.class );
 			
 		System.out.println("result-2: " + result.getUsername());
 		
-		assertThat(result.getUsername()).contains("cindyloo");
+		assertThat(result.getUsername()).contains("edsmith");
 	}
     
     @Test
@@ -142,13 +144,19 @@ public class UserControllerIntegrationTests {
 
     @Test
     void testDeleteUser(){
-        
-        String deleteUrl = "http://localhost:" + port + "/users/1";
+        //this.restTemplate.delete("http://localhost:" + port + "/users/12");
+        //get added user
+        String endpointUrl = "http://localhost:" + port + "/users/";
+        User result = this.restTemplate.getForObject(endpointUrl+this.userOne.getId(), User.class );
+
+        //delete one of the added users
+        String deleteUrl = "http://localhost:" + port + "/users/" + result.getId();
         
         this.restTemplate.delete(deleteUrl);
         User deletedUser = this.restTemplate.getForObject(deleteUrl, User.class);
         
         assertThat(deletedUser).isNull();
+        
     }
 
 }
