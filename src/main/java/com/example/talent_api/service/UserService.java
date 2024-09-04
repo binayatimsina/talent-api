@@ -19,8 +19,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public Object addUser(User user) {
-        
+    public User addUser(User user) {
         return (userRepository.save(user)); 
     }
 
@@ -42,8 +41,13 @@ public class UserService {
 
     }
 
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+    public boolean deleteUser(Long id) {
+        if(userRepository.existsById(id)){
+            userRepository.deleteById(id);
+            return true;
+        }
+        return false;
+        
     }
 
     public User findUserByUsername(String username, String password) {
