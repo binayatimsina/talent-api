@@ -15,7 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.talent_api.service.CandidateService;
+import com.example.talent_api.service.ManagerService;
 import com.example.talent_api.service.UserService;
+import com.example.talent_api.model.Candidate;
+import com.example.talent_api.model.Manager;
 import com.example.talent_api.model.User;
 import java.util.*;
 
@@ -25,6 +29,12 @@ public class AuthenticationController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ManagerService managerService;
+
+    @Autowired
+    private CandidateService candidateService;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody Map<String, String> loginCredential) {
@@ -48,7 +58,21 @@ public class AuthenticationController {
         String password = registrationCredential.get("password");
         String type = registrationCredential.get("type");
         
-        User newUser = userService.register(username, password, type);
+        User newUser = userService.register(username, password, type);;
+        if (type.equals("Hiring_Manager")) {
+            String fullName = registrationCredential.get("full_name");
+            String email = registrationCredential.get("email");
+            String department = registrationCredential.get("department");
+            String phone = registrationCredential.get("phone");
+            managerService.addManager(new Manager(newUser,fullName, email, department, phone));
+        } else if (type.equals("Candidate")){
+            String fullName = registrationCredential.get("full_name");
+            String email = registrationCredential.get("email");
+            String address = registrationCredential.get("address");
+            String phone = registrationCredential.get("phone");
+            String resume = registrationCredential.get("resume");
+            candidateService.addCandidate(new Candidate(newUser, fullName, email, address, phone, resume));
+        }
 
         if (newUser != null) {
             return ResponseEntity.status(HttpStatus.OK).body(newUser);
