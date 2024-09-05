@@ -50,6 +50,6 @@ public class ManagerService {
     }
 
     public Manager findManagerByUsername(String username) {
-        return managerRepository.findByUsername(username);
+       return managerRepository.findByUsername(username);
     }
 }

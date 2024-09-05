@@ -33,19 +33,19 @@ public class JWTService {
 
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<String, Object>();
+        // System.out.println((System.currentTimeMillis() + 60 * 60 * 1000) - System.currentTimeMillis());
 
         return Jwts.builder()
             .claims()
             .add(claims)
             .subject(username)
             .issuedAt(new Date(System.currentTimeMillis()))
-            .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 10))
+            .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000))
             .and()
             .signWith(getKey())
             .compact();
 
 
-        // return "THis is Binaya Token";
     }
 
     private SecretKey getKey() {

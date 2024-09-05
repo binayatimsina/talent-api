@@ -35,7 +35,7 @@ public class SecurityConfig {
         return http
             .csrf(customizer -> customizer.disable())
             .authorizeHttpRequests(request -> request
-                .requestMatchers("login", "registration")
+                .requestMatchers("login", "registration", "swagger-ui/*")
                 .permitAll()
                 .anyRequest().authenticated())
             .httpBasic(Customizer.withDefaults())
@@ -58,16 +58,5 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-
-    // @Bean
-    // public UserDetailsService userDetailsService() {
-    //     UserDetails user1 = User
-    //         .withDefaultPasswordEncoder()
-    //         .username("binaya")
-    //         .password("binaya")
-    //         .roles("USER")
-    //         .build();
-    //     return new InMemoryUserDetailsManager(user1);
-    // }
     
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.talent_api.model.Candidate;
+import com.example.talent_api.model.User;
 import com.example.talent_api.repository.CandidateRepository;
 
 

@@ -53,7 +53,10 @@ public class AuthenticationController {
             response.put("token", jwtService.generateToken(username));
             
             if (currentUser.getType().equals("Candidate")) {
-                response.put("user", candidateService.findCandidateByUsername(username));
+                // Candidate candidateUser = null;
+                Candidate candidateUser = candidateService.findCandidateByUsername(username);
+                response.put("user", candidateUser);
+                System.out.println(response);
                 return ResponseEntity.status(HttpStatus.OK).body(response);
             } else if (currentUser.getType().equals("Hiring_Manager")) {
                 response.put("user", managerService.findManagerByUsername(username));
@@ -74,7 +77,7 @@ public class AuthenticationController {
         String password = registrationCredential.get("password");
         String type = registrationCredential.get("type");
         
-        User newUser = userService.register(username, password, type);;
+        User newUser = userService.register(username, password, type);
         if (type.equals("Hiring_Manager")) {
             String fullName = registrationCredential.get("full_name");
             String email = registrationCredential.get("email");
