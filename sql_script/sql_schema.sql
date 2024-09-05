@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int NOT NULL AUTO_INCREMENT,
   `username` varchar(20) DEFAULT NULL,
-  `password` varchar(20) DEFAULT NULL,
+  `password` varchar(70) DEFAULT NULL,
   `type` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_UserName` (`username`)

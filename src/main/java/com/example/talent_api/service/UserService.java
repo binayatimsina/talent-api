@@ -7,17 +7,28 @@ import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.talent_api.repository.UserRepository;
 import com.example.talent_api.model.User;
+import com.example.talent_api.model.UserPrincipal;
+
 import java.util.*;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
+
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
 
     public User addUser(User user) {
         return (userRepository.save(user)); 
@@ -53,7 +64,8 @@ public class UserService {
     public User findUserByUsername(String username, String password) {
         User currentUser = userRepository.findUserByUsername(username);
         if (currentUser != null) {
-            if (currentUser.getPassword().equals(password)) {
+            System.out.println(currentUser.getPassword());
+            if (passwordEncoder.matches(password, currentUser.getPassword())) {
                 return currentUser;
             }
         } 
@@ -64,14 +76,27 @@ public class UserService {
     }
 
     public User register(String username, String password, String type) {
-        // TODO Auto-generated method stub
         if (userRepository.findUserByUsername(username) != null) {
             return null; 
         } else {
-            User newUser = new User(username, password, type);
+            String encryptedPassword = passwordEncoder.encode(password);
+            System.out.println(encryptedPassword);
+            System.out.println("\n\n\n\n\n");
+            User newUser = new User(username, encryptedPassword, type);
             addUser(newUser);
             return newUser;
         }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+         
+        User user = userRepository.findUserByUsername(username);
+        if (user == null) {
+            System.out.println("User not found!");
+            throw new UsernameNotFoundException("User not found");
+        }
+        return new UserPrincipal(user);
     }
     
 }

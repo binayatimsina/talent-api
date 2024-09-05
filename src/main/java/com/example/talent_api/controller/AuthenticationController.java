@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +23,8 @@ import com.example.talent_api.service.UserService;
 import com.example.talent_api.model.Candidate;
 import com.example.talent_api.model.Manager;
 import com.example.talent_api.model.User;
+import com.example.talent_api.security.JWTService;
+
 import java.util.*;
 
 @RestController
@@ -36,19 +40,27 @@ public class AuthenticationController {
     @Autowired
     private CandidateService candidateService;
 
+    @Autowired
+    private JWTService jwtService;
+
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody Map<String, String> loginCredential) {
         String username = loginCredential.get("username");
         String password = loginCredential.get("password");
-
         User currentUser = userService.findUserByUsername(username, password);
         if (currentUser != null) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", jwtService.generateToken(username));
+            
             if (currentUser.getType().equals("Candidate")) {
-                return ResponseEntity.status(HttpStatus.OK).body(candidateService.findCandidateByUsername(username));
+                response.put("user", candidateService.findCandidateByUsername(username));
+                return ResponseEntity.status(HttpStatus.OK).body(response);
             } else if (currentUser.getType().equals("Hiring_Manager")) {
-                return ResponseEntity.status(HttpStatus.OK).body(managerService.findManagerByUsername(username));
+                response.put("user", managerService.findManagerByUsername(username));
+                return ResponseEntity.status(HttpStatus.OK).body(response);
             }
-            return ResponseEntity.status(HttpStatus.OK).body(currentUser);
+            response.put("user", currentUser);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
