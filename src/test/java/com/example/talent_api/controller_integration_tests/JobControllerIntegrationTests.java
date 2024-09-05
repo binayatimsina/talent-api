@@ -148,7 +148,32 @@ public class JobControllerIntegrationTests {
         assertThat(listPostAdd.length).isEqualTo(6);
 
     }
+    @Test
+    void testGetOpenJobs() throws Exception{
+        String getUrl = "http://localhost:" + port + "/open";
+        Job[] openJobs = this.restTemplate.getForObject(getUrl, Job[].class);
+        System.out.println("number of jobs: " + openJobs.length);
 
+        assertThat(openJobs.length).isGreaterThan(0);
+		assertThat(openJobs.length).isEqualTo(6);
+    }
+    @Test
+    void getOpenJobsByManager()throws Exception {
+        String getUrl = "http://localhost:" + port + "/open/manager";
+        Job[] openJobsByManger = this.restTemplate.getForObject(getUrl + "/2", Job[].class);
+        System.out.println("number of jobs by manager: " + openJobsByManger.length);
+
+        assertThat(openJobsByManger.length).isGreaterThan(0);
+		assertThat(openJobsByManger.length).isEqualTo(6);
+    }
+    @Test 
+    void testSearch() throws Exception {
+        String getUrl = "http://localhost:" + port + "/search";
+        Job[] search = this.restTemplate.getForObject(getUrl + "?searchTerm=linda", Job[].class);
+        System.out.println("number of matching candidates: " + search.length);
+        assertThat(search.length).isGreaterThan(0);
+		assertThat(search.length).isEqualTo(1);
+    }
     @Test
     void testUpdateUser() throws Exception {
         //Get userOne
