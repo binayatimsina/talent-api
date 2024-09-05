@@ -19,8 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.talent_api.model.Manager;
 import com.example.talent_api.service.ManagerService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/managers")
+@Tag(name = "Manager APIs", description = "Operations related to managers")
 @CrossOrigin(origins="*")
 public class ManagerController {
 

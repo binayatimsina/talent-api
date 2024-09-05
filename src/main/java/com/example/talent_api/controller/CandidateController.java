@@ -21,8 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.talent_api.model.Candidate;
 import com.example.talent_api.service.CandidateService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/candidates")
+@Tag(name = "Candidate APIs", description = "Operations related to candidates")
 @CrossOrigin(origins="*")
 public class CandidateController {
 
@@ -79,6 +82,12 @@ public class CandidateController {
     public ResponseEntity<List<Candidate>> getCandidatesBySearchTerm(@RequestParam String searchTerm){
         List<Candidate> candidates = candidateService.searchCandidates(searchTerm);
         return ResponseEntity.status(HttpStatus.OK).body(candidates);
+    }
+
+    @GetMapping("/getcandidate/{userid}")
+    public ResponseEntity<Candidate> getCandidateByUserId(@PathVariable("userid") Long userid){
+        Candidate candidate = candidateService.getCandidateByUserId(userid);
+        return ResponseEntity.status(HttpStatus.OK).body(candidate);
     }
     
 }
