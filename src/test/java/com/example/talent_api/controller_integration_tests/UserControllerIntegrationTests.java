@@ -98,7 +98,6 @@ public class UserControllerIntegrationTests {
 
         //Create the request body with the headers
         String uriAdd = getAllUrl + "/";
-        //HttpHeaders headersPost = ControllerTestsData.getDefaultPutOrPostMediaTypeHeaders();
 
         HttpHeaders hp = new HttpHeaders();
         HttpEntity<User> reqBodyWithHeaders = new HttpEntity<>(this.userOne, hp);
@@ -111,7 +110,6 @@ public class UserControllerIntegrationTests {
         assertThat(users).isNotNull();
         assertThat(users.length).isEqualTo(10);
 
-        //assertThat(respUser.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(201));
         assertThat(respUser.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(201));
 
 
@@ -150,7 +148,6 @@ public class UserControllerIntegrationTests {
 
     @Test
     void testDeleteUser(){
-        //this.restTemplate.delete("http://localhost:" + port + "/users/12");
         //get added user
         String endpointUrl = "http://localhost:" + port + "/users/";
         User result = this.restTemplate.getForObject(endpointUrl+this.userOne.getId(), User.class );

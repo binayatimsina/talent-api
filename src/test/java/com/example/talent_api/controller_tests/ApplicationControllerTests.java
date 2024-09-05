@@ -19,6 +19,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -110,27 +112,27 @@ class ApplicationControllerTests {
     void testGetApplicationByJobId() {
         Application app = sampleApplication();
 
-        when(applicationService.getApplicationByJobId(1L)).thenReturn(Optional.of(app));
+        given(applicationService.getApplicationByJobId(1L)).willReturn(List.of(app));
 
-        ResponseEntity<Optional<Application>> response  = applicationController.getAllApplicationByJobId(1L);
+        ResponseEntity<List<Application>> response  = applicationController.getAllApplicationByJobId(1L);
 
-        Optional<Application> application = response.getBody();
+        List<Application> application = response.getBody();
 
-        assertThat(application).isPresent();
-        assertThat(application.get().getApplication_status()).isEqualTo("Pending");
+        assertThat(application).isNotNull();
+        assertThat(application.get(0).getApplication_status()).isEqualTo("Pending");
     }
 
     @Test
     void testGetApplicationByUserId() {
         Application app = sampleApplication();
 
-        when(applicationService.getApplicationByUserId(1L)).thenReturn(Optional.of(app));
+        given(applicationService.getApplicationByUserId(1L)).willReturn(List.of(app));
 
-        ResponseEntity<Optional<Application>> response  = applicationController.getAllApplicationByUserId(1L);
-        Optional<Application> application = response.getBody();
+        ResponseEntity<List<Application>> response  = applicationController.getAllApplicationByUserId(1L);
+        List<Application> application = response.getBody();
 
-        assertThat(application).isPresent();
-        assertThat(application.get().getApplication_status()).isEqualTo("Pending");
+        assertThat(application).isNotNull();
+        assertThat(application.get(0).getApplication_status()).isEqualTo("Pending");
     }
 }
 

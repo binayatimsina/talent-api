@@ -103,7 +103,7 @@ public class ManagerControllerIntegrationTests {
         HttpEntity<Manager> request = new HttpEntity<>(newManager, headers);
         ResponseEntity<Manager> response = this.restTemplate.postForEntity(uriAdd, request, Manager.class);
 
-        assertThat(response.getStatusCode()).isEqualTo(405);
+        assertThat(response.getStatusCodeValue()).isEqualTo(405);
         assertThat(response.getBody().getFull_name()).isEqualTo(null);
     }
     //above
@@ -119,7 +119,7 @@ public class ManagerControllerIntegrationTests {
         HttpEntity<Manager> request = new HttpEntity<>(managerOne, headers);
         ResponseEntity<Manager> response = this.restTemplate.exchange(uriUpdate, HttpMethod.PUT, request, Manager.class);
 
-        assertThat(response.getStatusCode()).isEqualTo(202);
+        assertThat(response.getStatusCodeValue()).isEqualTo(202);
         assertThat(response.getBody().getFull_name()).isEqualTo("Updated Manager");
     }
 
