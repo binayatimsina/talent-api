@@ -31,8 +31,8 @@ public class UserService implements UserDetailsService {
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
 
     public User addUser(User user) {
-        String password = user.getPassword();
-        user.setPassword(passwordEncoder.encode(password));
+        // String password = user.getPassword();
+        // user.setPassword(passwordEncoder.encode(password));
         return (userRepository.save(user)); 
     }
 
@@ -67,7 +67,10 @@ public class UserService implements UserDetailsService {
         User currentUser = userRepository.findUserByUsername(username);
         if (currentUser != null) {
             System.out.println(currentUser.getPassword());
-            if (passwordEncoder.matches(password, currentUser.getPassword())) {
+            // if (passwordEncoder.matches(password, currentUser.getPassword())) {
+            //     return currentUser;
+            // }
+            if (password.equals(currentUser.getPassword())) {
                 return currentUser;
             }
         } 
