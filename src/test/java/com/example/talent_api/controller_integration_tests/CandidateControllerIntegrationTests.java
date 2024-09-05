@@ -161,7 +161,7 @@ public class CandidateControllerIntegrationTests {
     }
 
     @Test
-    void testDeleteCandidate(){
+    void testDeleteCandidate() throws Exception{
 
         //Query all candidates
         String getAllUrl = "http://localhost:" + port + "/candidates";
@@ -186,6 +186,18 @@ public class CandidateControllerIntegrationTests {
         assertThat(listPostDelete).isNotNull();
         assertThat(listPostDelete.length).isEqualTo(6);
         assertThat(deletedCandidate).isNull();
+    }
+
+    @Test
+    void testGetCandidatesBySearchTerm() throws Exception {
+        String endpointUrl = "http://localhost:" + port + "/candidates/search";
+        //Candidate[] candidates = this.restTemplate.getForObject(endpointUrl, Candidate[].class); 
+        Candidate[] results = this.restTemplate.getForObject(endpointUrl + "?searchTerm=cindy", Candidate[].class);
+        System.out.println("number of matching candidates: " + results.length);
+		
+        assertThat(results.length).isGreaterThan(0);
+		assertThat(results.length).isEqualTo(1);
+
     }
 
 }

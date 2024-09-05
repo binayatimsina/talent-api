@@ -34,7 +34,7 @@ public class ApplicationController {
     public ResponseEntity<List<Application>> getAllApplications(){
         List<Application> applicationList = applicationService.getAllApplications();
         if(applicationList.size()!=0){
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(applicationList);
+            return ResponseEntity.status(HttpStatus.OK).body(applicationList);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(applicationList);
     }
@@ -54,33 +54,33 @@ public class ApplicationController {
         
         List<Application> applicationList = applicationService.getApplicationByManagerId(id);
         if(applicationList.size() != 0){
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(applicationList);
+            return ResponseEntity.status(HttpStatus.OK).body(applicationList);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(applicationList);
     }
 
     @GetMapping("/job/{job_id}")
-    public ResponseEntity<Optional<Application>> getAllApplicationByJobId(
+    public ResponseEntity<List<Application>> getAllApplicationByJobId(
             @PathVariable("job_id") Long id){
 
-        Optional<Application> applicationByJobId = applicationService.getApplicationByJobId(id);
+        List<Application> applicationByJobIdList = applicationService.getApplicationByJobId(id);
 
-        if(applicationByJobId.isPresent()){
-            return ResponseEntity.status(HttpStatus.OK).body(applicationByJobId);
+        if(applicationByJobIdList.size() !=0){
+            return ResponseEntity.status(HttpStatus.OK).body(applicationByJobIdList);
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Optional.empty());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(applicationByJobIdList);
     }
 
     @GetMapping("/user/{user_id}")
-    public ResponseEntity<Optional<Application>> getAllApplicationByUserId(
+    public ResponseEntity<List<Application>> getAllApplicationByUserId(
             @PathVariable("user_id") Long id){
 
-        Optional<Application> applicationByUserId = applicationService.getApplicationByUserId(id);
+        List<Application> applicationByUserIdList = applicationService.getApplicationByUserId(id);
 
-        if(applicationByUserId.isPresent()){
-            return ResponseEntity.status(HttpStatus.OK).body(applicationByUserId);
+        if(applicationByUserIdList.size() != 0){
+            return ResponseEntity.status(HttpStatus.OK).body(applicationByUserIdList);
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Optional.empty());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(applicationByUserIdList);
     }
 
     @PostMapping("")
@@ -105,6 +105,7 @@ public class ApplicationController {
         }catch(Exception ex){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error has occurred: " + ex.getMessage());
         }
+
     }
 
     @DeleteMapping("/{id}")

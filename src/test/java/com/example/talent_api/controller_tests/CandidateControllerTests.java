@@ -37,10 +37,10 @@ public class CandidateControllerTests {
         Candidate c2 = new Candidate();
 
         given(cs.getAllCandidates()).willReturn(List.of(c1,c2));
-        var cList = cs.getAllCandidates();
+        var cList = cc.getAllCandidates();
         //then
         assertThat(cList).isNotNull();
-        assertThat(cList.size()).isEqualTo(2);
+        assertThat(cList.getBody().size()).isEqualTo(2);
     }
 
     @Test
@@ -120,6 +120,21 @@ public class CandidateControllerTests {
         //then
         assertThat(resp.getBody()).isNotNull();
         assertThat(resp.getBody()).isEqualTo(true); //comparing service return vals with repo return val
+
+    }
+
+    void testGetCandidatesBySearchTerm() {
+
+        User u1 = new User("user1","pass1","admin");
+        User u2 = new User("user2","pass2","admin");
+        Candidate c1 = new Candidate();
+        Candidate c2 = new Candidate();
+
+        given(cs.searchCandidates("user1")).willReturn(List.of(c1));
+        var cList = cc.getCandidatesBySearchTerm("user1");
+        //then
+        assertThat(cList).isNotNull();
+        assertThat(cList.getBody().size()).isEqualTo(1);U
 
     }
 

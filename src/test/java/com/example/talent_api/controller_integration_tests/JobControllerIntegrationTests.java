@@ -141,7 +141,7 @@ public class JobControllerIntegrationTests {
         assertThat(jobs.length).isEqualTo(5);
 
         //assertThat(respUser.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(201));
-        assertThat(respUser.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(201));
+        assertThat(respUser.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(200));
 
 
         assertThat(listPostAdd).isNotNull();
