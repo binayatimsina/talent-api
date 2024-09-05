@@ -42,8 +42,12 @@ public class AuthenticationController {
         String password = loginCredential.get("password");
 
         User currentUser = userService.findUserByUsername(username, password);
-        
         if (currentUser != null) {
+            if (currentUser.getType().equals("Candidate")) {
+                return ResponseEntity.status(HttpStatus.OK).body(candidateService.findCandidateByUsername(username));
+            } else if (currentUser.getType().equals("Hiring_Manager")) {
+                return ResponseEntity.status(HttpStatus.OK).body(managerService.findManagerByUsername(username));
+            }
             return ResponseEntity.status(HttpStatus.OK).body(currentUser);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

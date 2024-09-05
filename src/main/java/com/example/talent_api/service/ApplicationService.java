@@ -30,14 +30,14 @@ public class ApplicationService {
         return appplicationByManagerId;
     }
 
-    public Optional<Application> getApplicationByJobId(Long jobId){
-        Optional<Application> appplicationByJobId = 
+    public List<Application> getApplicationByJobId(Long jobId){
+        List<Application> appplicationByJobId = 
             applicationRepository.findByJob_Id(jobId);
         return appplicationByJobId;
     }
 
-    public Optional<Application> getApplicationByUserId(Long userId){
-        Optional<Application> appplicationByUserId = 
+    public List<Application> getApplicationByUserId(Long userId){
+        List<Application> appplicationByUserId = 
             applicationRepository.findByUser_Id(userId);
         return appplicationByUserId;
     }
