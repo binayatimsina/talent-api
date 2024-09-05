@@ -1,6 +1,10 @@
 package com.example.talent_api.controller_tests;
 import java.util.*;
+
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,11 +23,22 @@ import com.example.talent_api.model.User;
 import com.example.talent_api.service.JobService;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class JobControllerTests {
-    @Mock private JobService jobservice;
-    @InjectMocks private JobController jobcontroller;
+    @Mock 
+    private JobService jobservice;
+
+    @InjectMocks 
+    private JobController jobcontroller;
+
     User user = new User("julian", "password", "user");
     Manager manager = new Manager(user, "Julan S Vanderpool", "julianva09@gmail.com", "Tech", "7573777902");
     Job job = new Job(manager, "Finance", "Name", "Developer", "Description", "Five Years On Job", "Agency");
@@ -42,18 +57,22 @@ public class JobControllerTests {
     public void testgetJobsByID() {
         Job job = new Job(manager, "Finance", "Name", "Developer", "Description", "Five Years On Job", "Agency");
         Job job2 = new Job(manager, "COrporate", "CEO", "Developer", "Description", "Five Years On Job", "Agency");
-        given(jobservice.getJobById(2l)).willReturn(Optional.ofNullable(jobservice));
+        given(jobservice.getJobById(2l)).willReturn(Optional.ofNullable(job));
     }
     @Test
-    public void testaddJob() {
-        User user = new User("julian", "password", "user");
+    public void testaddJob() throws Exception {
+        User u1 = new User("user1","pass1","admin");
         Manager manager = new Manager(user, "Julan S Vanderpool", "julianva09@gmail.com", "Tech", "7573777902");
-        Job job = new Job(manager, "Finance", "Name", "Developer", "Description", "Five Years On Job", "Agency");
-        given(jobservice.addJob(job)).willReturn(job);
-        var jobs = jobcontroller.addJob(job);
-        var j = (ResponseEntity<Job>) jobs;
-        assertThat(j.getBody()).isNotNull();
-        assertThat(j.getBody()).isEqualTo(job);
+        Job job = new Job();
+        job.setManager(manager);
+        job.setDepartment("Finance");
+        job.setJob_title("Banker");
+        job.setListing_title("Full time banker");
+        
+        when(jobservice.addJob(any(Job.class))).thenReturn(job);
+        var response = jobcontroller.addJob(job).getBody();
+        assertThat(response).isNotNull();
+        assertThat(response).isEqualTo(job);
     }
     @Test
     public void testupdateJOb() {
@@ -74,19 +93,19 @@ public class JobControllerTests {
         job.setJob_title("Banker");
         job.setListing_title("Full time banker");
         //us.addUser(u1);
-        jobservice.addJob(job);
-
         //when
         //the repository method and what it should return
-        given(jobservice.deleteJob(job.getId())).willReturn(true);
+        given(jobservice.deleteJob(job.getId()));
         //the return is Optional<Customer> so it should be nullable in case null returns
         //the service method calling the repo...
         var resp = jobcontroller.deleteJob(job.getId());
         //then
         assertThat(resp.getBody()).isNotNull();
         assertThat(resp.getBody()).isEqualTo(true);
+        
 
     }
+
     void testGetJobsBySearchTerm() {
 
         User user = new User("julian", "password", "user");

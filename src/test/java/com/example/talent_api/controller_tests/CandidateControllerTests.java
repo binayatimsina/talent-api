@@ -134,7 +134,7 @@ public class CandidateControllerTests {
         var cList = cc.getCandidatesBySearchTerm("user1");
         //then
         assertThat(cList).isNotNull();
-        assertThat(cList.getBody().size()).isEqualTo(1);U
+        assertThat(cList.getBody().size()).isEqualTo(1);
 
     }
 
