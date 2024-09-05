@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.talent_api.model.Application;
 import com.example.talent_api.service.ApplicationService;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
-
 @RestController
 @RequestMapping("/applications")
 @Tag(name = "Application APIs", description = "Operations related to applications")
