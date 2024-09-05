@@ -102,7 +102,7 @@ class ManagerControllerTests {
     void testAddManager() {
         // Creating a sample Manager object
         User user = new User();
-        user.setId(1L);
+        //user.setId(1L);
 
         Manager newManager = new Manager();
         newManager.setUser(user);
@@ -128,7 +128,7 @@ class ManagerControllerTests {
     void testUpdateManager() {
         // Creating a sample Manager object
         User user = new User();
-        user.setId(1L);
+        //user.setId(1L);
 
         Manager updatedManager = new Manager();
         updatedManager.setUser(user);
