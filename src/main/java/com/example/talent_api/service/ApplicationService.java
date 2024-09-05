@@ -57,8 +57,13 @@ public class ApplicationService {
         return applicationRepository.save(existingApplication);
     }
 
-    public void deleteApplication (Long id){
-        applicationRepository.deleteById(id);
+    public boolean deleteApplication (Long id){
+        if(applicationRepository.existsById(id)){
+            applicationRepository.deleteById(id);
+            return true;
+        }
+        return false;
+        
     }
 
 }
