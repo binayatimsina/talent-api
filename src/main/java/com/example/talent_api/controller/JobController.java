@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.talent_api.model.Job;
 import com.example.talent_api.service.JobService;
-
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -84,7 +83,7 @@ public class JobController {
     public ResponseEntity<?> updateJob(@PathVariable("id") Long id, @RequestBody Job job){
         try {
             Job updatedJob = jobService.updateJob(id, job);
-            return ResponseEntity.status(HttpStatus.OK).body(updatedJob);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(updatedJob);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e.getMessage());
         }
@@ -94,7 +93,7 @@ public class JobController {
     public ResponseEntity<Boolean> deleteJob(@PathVariable("id") Long id){
         try {
             jobService.deleteJob(id);
-            return ResponseEntity.status(HttpStatus.OK).body(true);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(true);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
         }

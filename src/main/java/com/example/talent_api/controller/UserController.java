@@ -39,7 +39,7 @@ public class UserController {
     public ResponseEntity<List<User>> getAllUsers(){
         List<User> userList = userService.getAllUsers();
         if(userList.size()!=0){
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(userList);
+            return ResponseEntity.status(HttpStatus.OK).body(userList);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(userList);
     }
