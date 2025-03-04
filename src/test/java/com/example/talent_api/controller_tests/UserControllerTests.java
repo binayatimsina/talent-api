@@ -10,12 +10,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+
 import com.example.talent_api.controller.UserController;
 import com.example.talent_api.model.User;
 import com.example.talent_api.service.UserService;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 @ExtendWith(MockitoExtension.class)
 public class UserControllerTests {
     
